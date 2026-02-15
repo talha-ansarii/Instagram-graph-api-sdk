@@ -276,4 +276,4 @@ client.setAccessToken('new-access-token');
 
 ## License
 
-MIT
+Licensed under the [Apache License 2.0](LICENSE). See the [LICENSE](LICENSE) file for details.
