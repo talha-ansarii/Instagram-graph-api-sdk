@@ -1,0 +1,194 @@
+# Get Conversations
+
+This document explains how to get information about conversations between your app user and an Instagram user interested in your app user's Instagram media. You can get:
+
+- A list of conversations for your app user's Instagram professional account
+- A list of messages within each conversation
+- Details about each message including when the message was sent and from who
+
+## Requirements
+
+This guide assumes you have read the Instagram Platform Overview and implemented the needed components for using this API, such as a Meta login flow and a webhooks server to receive notifications.
+
+You will need the following:
+
+### Access Level
+
+| Access Type | Description |
+|-------------|-------------|
+| **Advanced Access** | If your app serves Instagram professional accounts you don't own or manage |
+| **Standard Access** | If your app serves Instagram professional accounts you own or manage and have added to your app in the App Dashboard |
+
+### Access Tokens
+
+An Instagram User access token requested from a person who can manage messages on the Instagram professional account.
+
+### Base URL
+
+All endpoints can be accessed via the `graph.instagram.com` host.
+
+### Endpoints
+
+- `/<IG_ID>/conversations` or `/me/conversations`
+
+### IDs
+
+- The ID for the Instagram professional account (`<IG_ID>`)
+- The Instagram-scoped ID for the Instagram user in the conversation
+
+### Permissions
+
+- `instagram_business_basic`
+- `instagram_business_manage_messages`
+
+### Limitations
+
+> [!WARNING]
+> - Only the image or video URL for a share will be included in the data returned in a call to the API or in the webhooks notification.
+> - Conversations that are within the Requests folder that have not been active for 30 days will not be returned in API calls.
+
+---
+
+## Get a List of Conversations
+
+To get a list of your app user's conversations for an Instagram professional account, send a `GET` request to the `/<IG_ID>/conversations` endpoint.
+
+### Sample Request
+
+```bash
+curl -i -X GET "https://graph.instagram.com/v24.0/me/conversations?platform=instagram&access_token=<INSTAGRAM_ACCESS_TOKEN>"
+```
+
+On success, your app will receive a JSON object with a list of IDs for the conversations between you and a person and the most recent time a message was sent.
+
+### Sample Response
+
+```json
+{
+  "data": [
+    {
+      "id": "<CONVERSATION_ID_1>",  
+      "updated_time": "<UNIX_TIMESTAMP>"
+    },
+    {
+      "id": "<CONVERSATION_ID_2>",   
+      "updated_time": "<UNIX_TIMESTAMP>"
+    }
+  ]
+}
+```
+
+---
+
+## Find a Conversation with a Specific Person
+
+To get a conversation between your app user's Instagram professional account and a specific Instagram user, send a `GET` request to the `/<IG_ID>/conversations` endpoint with the following parameters:
+
+- `user_id` parameter set to the Instagram-scoped ID for the Instagram user in the conversation
+
+### Sample Request
+
+```bash
+curl -i -X GET "https://graph.instagram.com/v24.0/me/conversations?user_id=<IGSID>&access_token=<INSTAGRAM_ACCESS_TOKEN>"
+```
+
+On success, your app will receive the ID for the conversation.
+
+### Sample Response
+
+```json
+{
+  "data": [
+    {
+      "id": "<CONVERSATION_ID>"
+    }
+  ]
+}
+```
+
+---
+
+## Get a List of Messages in a Conversation
+
+To get a list of messages in a conversation, send a `GET` request to the `/<CONVERSATION_ID>` endpoint with the `fields` parameter set to `messages`.
+
+### Sample Request
+
+```bash
+curl -i -X GET "https://graph.instagram.com/v24.0/<CONVERSATION_ID>?fields=messages&access_token=<INSTAGRAM_ACCESS_TOKEN>"
+```
+
+On success, your app will receive a list of message IDs and the time each message was created.
+
+### Sample Response
+
+```json
+{
+  "messages": {
+    "data": [
+      {
+        "id": "<MESSAGE_1_ID>",      
+        "created_time": "<UNIX_TIMESTAMP_MOST_RECENT_MESSAGE>"  
+      },
+      {
+        "id": "<MESSAGE_2_ID>",
+        "created_time": "<UNIX_TIMESTAMP>"
+      },
+      {
+        "id": "<MESSAGE_3_ID>",
+        "created_time": "<UNIX_TIMESTAMP>"
+      }
+    ]
+  },
+  "id": "<CONVERSATION_ID>"
+}
+```
+
+---
+
+## Get Information About a Message
+
+To get information about a message, such as the sender, receiver, and message content, send a `GET` request to the `/<MESSAGE_ID>` endpoint with the `fields` parameter set to a comma separated list of fields you are interested in.
+
+Default fields are `id` and `created_time`.
+
+> [!IMPORTANT]
+> Queries to the `/<CONVERSATION_ID>` endpoint will return all message IDs in a conversation. However, you can only get details about the 20 most recent messages in the conversation. If you query a message that is older than the last 20, you will see an error that the message has been deleted.
+
+### Sample Request
+
+```bash
+curl -i -X GET "https://graph.instagram.com/v24.0/<MESSAGE_ID>?fields=id,created_time,from,to,message&access_token=<INSTAGRAM_ACCESS_TOKEN>"
+```
+
+On success, your app will receive a JSON response with a list of fields that you requested and values for each.
+
+### Sample Response
+
+```json
+{
+  "id": "aWdGGiblWZ...",
+  "created_time": "2022-07-12T19:11:07+0000",
+  "to": {
+    "data": [
+      {
+        "username": "<IG_ID_USERNAME>",
+        "id": "<IG_ID>"
+      }
+    ]
+  },
+  "from": {
+    "username": "<IGSID_USERNAME>",
+    "id": "<IGSID>"
+  },
+  "message": "Hi Kitty!"
+}
+```
+
+---
+
+## See Also
+
+- Conversations Reference
+- Conversation Messages Reference
+- Message Reference

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["src/index.ts"],
+  "out": "docs/api-reference",
+  "plugin": ["typedoc-plugin-markdown"],
+  "readme": "none",
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeInternal": true,
+  "githubPages": true,
+  "hideGenerator": true,
+  "name": "Instagram Graph API SDK",
+  "includeVersion": true,
+  "categorizeByGroup": true,
+  "categoryOrder": ["OAuth", "Client", "API Modules", "Types", "Errors", "*"],
+  "sort": ["source-order"],
+  "navigation": {
+    "includeCategories": true,
+    "includeGroups": true
+  }
+}
