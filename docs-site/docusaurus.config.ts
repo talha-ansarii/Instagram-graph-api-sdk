@@ -11,11 +11,13 @@ const config: Config = {
     v4: true,
   },
 
-  url: 'https://your-org.github.io',
-  baseUrl: '/instagram-graph-api-sdk/',
+  url: 'https://talha-ansarii.github.io',
+  baseUrl: '/Instagram-graph-api-sdk/',
 
-  organizationName: 'your-org',
-  projectName: 'instagram-graph-api-sdk',
+  organizationName: 'talha-ansarii',
+  projectName: 'Instagram-graph-api-sdk',
+  deploymentBranch: 'gh-pages',
+  trailingSlash: false,
 
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
@@ -66,7 +68,7 @@ const config: Config = {
           position: 'right',
         },
         {
-          href: 'https://github.com/your-org/instagram-graph-api-sdk',
+          href: 'https://github.com/talha-ansarii/Instagram-graph-api-sdk',
           label: 'GitHub',
           position: 'right',
         },
@@ -93,7 +95,7 @@ const config: Config = {
         {
           title: 'More',
           items: [
-            { label: 'GitHub', href: 'https://github.com/your-org/instagram-graph-api-sdk' },
+            { label: 'GitHub', href: 'https://github.com/talha-ansarii/Instagram-graph-api-sdk' },
             { label: 'NPM Package', href: 'https://www.npmjs.com/package/instagram-graph-api-sdk' },
           ],
         },
